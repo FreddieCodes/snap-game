@@ -1,6 +1,28 @@
+import { useState } from 'react';
 import './App.css';
 
+const cardImages = [
+  {"src": "/img/helmet-1.png"},
+  {"src": "/img/potion-1.png"},
+  {"src": "/img/ring-1.png"},
+  {"src": "/img/scroll-1.png"},
+  {"src": "/img/shield-1.png"},
+  {"src": "/img/sword-1.png"}
+];
+
 function App() {
+  const [cards, setCards] = useState([]) // cards in play
+
+  // shuffle cards
+  const shuffleCards = () => {
+    const shuffleCards = [...cardImages, ...cardImages]
+      .sort(() => Math.random() - 0.5) // randomize
+      .map((card) => ({ ...card, id: Math.random() })) // add id
+
+    setCards(shuffleCards)
+  }
+
+
   return (
     <div className="App">
       <h1>Snap Game</h1>
