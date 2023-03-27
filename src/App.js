@@ -15,11 +15,11 @@ function App() {
 
   // shuffle cards
   const shuffleCards = () => {
-    const shuffleCards = [...cardImages, ...cardImages]
+    const shuffledCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5) // randomize
       .map((card) => ({ ...card, id: Math.random() })) // add id
 
-    setCards(shuffleCards)
+    setCards(shuffledCards)
   }
 
 
