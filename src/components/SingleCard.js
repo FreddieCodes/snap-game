@@ -1,4 +1,4 @@
-import React from 'react'
+import './SingleCard.css';
 
 export default function SingleCard({ id, src }) {
   return (
