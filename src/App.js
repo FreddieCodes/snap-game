@@ -12,6 +12,7 @@ const cardImages = [
 
 function App() {
   const [cards, setCards] = useState([]) // cards in play
+  const [turns, setTurns ] = useState(0) // number of turns
 
   // shuffle cards
   const shuffleCards = () => {
@@ -20,13 +21,16 @@ function App() {
       .map((card) => ({ ...card, id: Math.random() })) // add id
 
     setCards(shuffledCards)
+    setTurns(0)
   }
 
-
+  console.log(cards);
+  console.log(turns);
+  
   return (
     <div className="App">
       <h1>Snap Game</h1>
-      <button>New Game</button>
+      <button onClick={shuffleCards}>New Game</button>
     </div>
   );
 }
