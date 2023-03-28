@@ -1,20 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SingleCard from './components/SingleCard';
 import './App.css';
 
 const cardImages = [
-  {"src": "/img/helmet-1.png"},
-  {"src": "/img/potion-1.png"},
-  {"src": "/img/ring-1.png"},
-  {"src": "/img/scroll-1.png"},
-  {"src": "/img/shield-1.png"},
-  {"src": "/img/sword-1.png"}
+  {"src": "/img/helmet-1.png" , matched: false},
+  {"src": "/img/potion-1.png" , matched: false},
+  {"src": "/img/ring-1.png" , matched: false},
+  {"src": "/img/scroll-1.png" , matched: false},
+  {"src": "/img/shield-1.png" , matched: false},
+  {"src": "/img/sword-1.png" , matched: false}
 ];
 
 function App() {
   const [cards, setCards] = useState([]) // cards in play
   const [turns, setTurns ] = useState(0) // number of turns
+  const [choiceOne, setChoiceOne] = useState(null) // first card choice
+  const [choiceTwo, setChoiceTwo] = useState(null) // second card choice
 
+  // compare choices
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.src === choiceTwo.src) {
+        setCards(prevCards => {
+          return prevCards.map(card => {
+            if (card.src === choiceOne.src || card.src === choiceTwo.src) {
+              return {...card, matched: true} // mark as matched 
+            } else {
+              return card; // leave unmatched
+            }
+          })
+        })
+        resetTurn();
+      } else {
+        resetTurn();
+      }
+    }
+  }, [choiceOne, choiceTwo])
+
+    console.log(cards);
   // shuffle cards
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -25,8 +48,17 @@ function App() {
     setTurns(0)
   }
 
-  console.log(cards);
-  console.log(turns);
+  // handle a choice
+  const handleChoice = (card) => {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+  }
+
+  // reset choices & increase turns
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(prevTurns => prevTurns + 1);
+  }
 
   return (
     <div className="App">
@@ -35,7 +67,11 @@ function App() {
 
       <div className="card-grid">
         {cards.map((card) => (
-          <SingleCard key={card.id} {...card} />
+          <SingleCard 
+            key={card.id}
+            card={card}
+            handleChoice={handleChoice}
+          />
         ))}
       </div>
     </div>
